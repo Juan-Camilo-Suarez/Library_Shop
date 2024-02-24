@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.core.cache import cache
 
-from app.models import Author
+from app.models import Author, Client
 
 # Cache time to live is 30 minutes.
 CACHE_TTL = 60 * 30
@@ -24,3 +24,24 @@ def get_book_by_authors(request):
         return Response(data)
     else:
         return Response(my_value)
+
+
+@api_view()
+def get_orders_by_client(request):
+    """http://127.0.0.1:8000/api/weather?pk=1"""
+    client_pk = request.GET.get('pk')
+    key_cache = f"orders-{client_pk}"
+    my_client = cache.get(key_cache)
+    data = {}
+    if my_client is None:
+        client = Client.objects.prefetch_related('orders').get(pk=client_pk)
+        for cli in client.orders.all():
+            data[cli.id] = {
+                "employee": cli.employee.name,
+                "book": cli.book.name
+            }
+
+        cache.set(key_cache, data, CACHE_TTL)
+        return Response(data)
+    else:
+        return Response(my_client)
