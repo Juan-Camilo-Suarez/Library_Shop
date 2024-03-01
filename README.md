@@ -16,3 +16,6 @@
 ```python src/app/manage.py runserver```
 7. Загрузить fixture на бд:\
 ```python src/manage.py loaddata fixtures/initial_data.json ```
+
+# Diagram
+![image](https://github.com/Juan-Camilo-Suarez/Library_Shop/assets/71409094/7db36adb-9aa4-4573-8e34-d71ecc8398a8)
