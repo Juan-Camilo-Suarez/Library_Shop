@@ -4,13 +4,13 @@ from django.db import models
 # Create your models here.
 class Client(models.Model):
     name = models.CharField(max_length=200, null=False, blank=False)
-    email = models.EmailField(max_length=200, null=False, blank=False)
+    email = models.EmailField(max_length=200, null=False, blank=False, db_index=True)
     phone_number = models.CharField(max_length=12)
     university = models.CharField(max_length=200, null=True, blank=True)
 
 
 class Employee(models.Model):
-    name = models.CharField(max_length=200, null=False, blank=False)
+    name = models.CharField(max_length=200, null=False, blank=False, db_index=True)
     email = models.EmailField(max_length=200, null=False, blank=False)
     phone_number = models.CharField(max_length=12)
     salary = models.CharField(max_length=6, null=False, blank=False)
