@@ -16,5 +16,6 @@ urlpatterns = [
     path('order_create', views.OrderViewSet.as_view({'post': 'create'})),
     path('clients_clasification', views.get_clients_by_university, name='get clients id by university'),
     path('books_list', views.BooksApiView.as_view()),
+    path('best_client', views.get_most_frequently_client, name='best client'),
     path('', include(router.urls)),
 ]
