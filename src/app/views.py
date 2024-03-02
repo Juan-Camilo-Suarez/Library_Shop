@@ -6,6 +6,8 @@ from rest_framework import viewsets, status
 from django.core.cache import cache
 from drf_yasg.utils import swagger_auto_schema
 from django.db.models import Subquery, OuterRef
+from django.db.models import Count
+
 
 from app.models import Author, Employee, Client, Order, Book
 from app.serializers import AuthorSerializer, OrderSerializer, BookSerializer
@@ -82,6 +84,21 @@ def get_clients_by_university(request):
     orders_of_client_from_university = Order.objects.filter(client__in=Subquery(clients.values('id')))
     students_id = [i.id for i in orders_of_client_from_university]
     data[university] = students_id
+    return Response(data)
+
+
+@api_view(['GET'])
+def get_most_frequently_client(request):
+    """http://127.0.0.1:8000/api/v1/clients_clasification?university=1"""
+    data = {}
+    client_orders_count = (Client.objects.annotate(order_count=Count('orders')).
+                           order_by('-order_count').values('id',
+                                                           'name',
+                                                           'order_count'))
+    data=client_orders_count[0]['id'] = {
+        'name': client_orders_count[0]['name'],
+        'total_orders': client_orders_count[0]['order_count']
+    }
     return Response(data)
 
 
