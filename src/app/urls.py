@@ -14,6 +14,7 @@ urlpatterns = [
     path('orders', views.get_orders_by_client, name='get orders_by_client'),
     path('order', views.get_order_info, name='get order'),
     path('order_create', views.OrderViewSet.as_view({'post': 'create'})),
+    path('clients_clasification', views.get_clients_by_university, name='get clients id by university'),
     path('books_list', views.BooksApiView.as_view()),
     path('', include(router.urls)),
 ]
