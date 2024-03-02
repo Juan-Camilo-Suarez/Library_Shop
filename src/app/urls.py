@@ -8,9 +8,11 @@ router = routers.SimpleRouter()
 
 router.register('author', views.AuthorViewSetModel)
 
+
 urlpatterns = [
     path('books', views.get_book_by_authors, name='get book by author pk'),
     path('orders', views.get_orders_by_client, name='get orders_by_client'),
     path('order', views.get_order_info, name='get order'),
+    path('order_create', views.OrderViewSet.as_view({'post': 'create'})),
     path('', include(router.urls)),
 ]
