@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework import viewsets, status
 from django.core.cache import cache
 from drf_yasg.utils import swagger_auto_schema
+from django.db.models import Subquery, OuterRef
 
 from app.models import Author, Employee, Client, Order, Book
 from app.serializers import AuthorSerializer, OrderSerializer, BookSerializer
@@ -72,6 +73,18 @@ def get_order_info(request):
         return Response(my_client)
 
 
+@api_view()
+def get_clients_by_university(request):
+    """http://127.0.0.1:8000/api/v1/clients_clasification?university=1"""
+    university = request.GET.get('university')
+    data = {}
+    clients = Client.objects.filter(university=university)
+    orders_of_client_from_university = Order.objects.filter(client__in=Subquery(clients.values('id')))
+    students_id = [i.id for i in orders_of_client_from_university]
+    data[university] = students_id
+    return Response(data)
+
+
 # ModelViewSet have default implementation CRUD operations
 class AuthorViewSetModel(viewsets.ModelViewSet):
     """
@@ -89,6 +102,7 @@ class OrderViewSet(viewsets.ViewSet):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 # APIView have http methods to handler request based on class
 class BooksApiView(APIView):
