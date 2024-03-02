@@ -8,10 +8,12 @@ class AuthorSerializer(serializers.ModelSerializer):
         model = Author
         fields = ['name', 'email', 'university', 'age']
 
-# class OrderSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Order
-#         fields = ['client', 'employee', 'book']
+
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ['id','client', 'employee', 'book']
+        read_only_fields = ['id']
 
 # class BookSerializer(serializers.ModelSerializer):
 #     authors =
