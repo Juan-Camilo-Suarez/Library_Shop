@@ -17,5 +17,6 @@ urlpatterns = [
     path('clients_clasification', views.get_clients_by_university, name='get clients id by university'),
     path('books_list', views.BooksApiView.as_view()),
     path('best_client', views.get_most_frequently_client, name='best client'),
+    path('author_book_price', views.get_author_by_books_price, name='author_book_price'),
     path('', include(router.urls)),
 ]
