@@ -14,7 +14,11 @@
 ```python manage.py migrate```
 6. Запуск сервера:\
 ```python src/app/manage.py runserver```
-7. Загрузить fixture на бд:\
+7. запуск celery:\
+```cd src```
+next
+```celery -A project worker```
+8. Загрузить fixture на бд:\
 ```python src/manage.py loaddata fixtures/initial_data.json ```
 
 # Diagram
