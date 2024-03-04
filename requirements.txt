@@ -3,3 +3,6 @@ djangorestframework
 psycopg2-binary
 python-dotenv
 drf-yasg
+celery
+celery[redis]
+flower
