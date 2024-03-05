@@ -10,6 +10,7 @@ from django.db.models import Count
 
 from app.models import Author, Employee, Client, Order, Book
 from app.serializers import AuthorSerializer, OrderSerializer, BookSerializer
+from app.tasks import send_feedback_email_task
 
 # Cache time to live is 30 minutes.
 CACHE_TTL = 60 * 30
@@ -126,7 +127,11 @@ class OrderViewSet(viewsets.ViewSet):
     def create(self, request):
         serializer = OrderSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            order = serializer.save()
+            client_id = order.client.id
+            employee_id = order.employee.id
+            book_id = order.book.id
+            send_feedback_email_task.delay(client_id, employee_id, book_id)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
